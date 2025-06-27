@@ -72,24 +72,24 @@ const TripPlanner = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-[#cce0ff] to-white dark:from-[#0a192f] dark:to-[#1c1c3a] transition-all duration-300 ease-in-out">
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Trip Planner</h1>
-          <p className="text-gray-600">Plan your journey and get the best route suggestions</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">Trip Planner</h1>
+          <p className="text-gray-600 dark:text-slate-100 transition-colors duration-300">Plan your journey and get the best route suggestions</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Search Form */}
           <div className="lg:col-span-1">
             <Card>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Plan Your Route</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Plan Your Route</h2>
               
               <form onSubmit={handlePlanTrip} className="space-y-4">
                 <div>
-                  <label htmlFor="from" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="from" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">
                     From
                   </label>
                   <input
@@ -98,13 +98,13 @@ const TripPlanner = () => {
                     value={fromLocation}
                     onChange={(e) => setFromLocation(e.target.value)}
                     placeholder="Enter starting location"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-300 ease-in-out"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="to" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="to" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">
                     To
                   </label>
                   <input
@@ -113,7 +113,7 @@ const TripPlanner = () => {
                     value={toLocation}
                     onChange={(e) => setToLocation(e.target.value)}
                     placeholder="Enter destination"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-300 ease-in-out"
                     required
                   />
                 </div>
@@ -132,7 +132,7 @@ const TripPlanner = () => {
                     <button
                       type="button"
                       onClick={clearSearch}
-                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     >
                       Clear
                     </button>
@@ -145,7 +145,7 @@ const TripPlanner = () => {
             {routes.length > 0 && (
               <div className="mt-6">
                 <Card>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
                     Route Options ({routes.length})
                   </h3>
                   
@@ -153,24 +153,24 @@ const TripPlanner = () => {
                     {routes.map((route, index) => (
                       <div
                         key={route.id}
-                        className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors cursor-pointer"
+                        className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors cursor-pointer"
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
                               Option {index + 1}
                             </span>
-                            <span className="font-medium text-gray-900">{route.duration}</span>
+                            <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">{route.duration}</span>
                           </div>
-                          <span className="text-sm font-medium text-green-600">{route.cost}</span>
+                          <span className="text-sm font-medium text-green-600 dark:text-green-400 transition-colors duration-300">{route.cost}</span>
                         </div>
                         
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
+                        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300 mb-2 transition-colors duration-300">
                           <span>{route.transfers} transfer{route.transfers !== 1 ? 's' : ''}</span>
                           <span>{route.walkTime} walking</span>
                         </div>
                         
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
                           {route.steps.join(' → ')}
                         </div>
                       </div>
@@ -184,20 +184,20 @@ const TripPlanner = () => {
           {/* Map and Details */}
           <div className="lg:col-span-2">
             <Card>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Route Map</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Route Map</h2>
               <MapSection height="h-96" />
               
               {routes.length === 0 && !loading && (
                 <div className="mt-6 text-center">
-                  <Bus className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">Enter your start and destination to see routes</p>
+                  <Bus className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4 transition-colors duration-300" />
+                  <p className="text-gray-500 dark:text-gray-400 transition-colors duration-300">Enter your start and destination to see routes</p>
                 </div>
               )}
               
               {loading && (
                 <div className="mt-6 text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-500">Finding the best routes for you...</p>
+                  <p className="text-gray-500 dark:text-gray-400 transition-colors duration-300">Finding the best routes for you...</p>
                 </div>
               )}
             </Card>
