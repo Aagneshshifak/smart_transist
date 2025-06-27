@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NearbyStops from "./pages/NearbyStops";
 import TripPlanner from "./pages/TripPlanner";
+import About from "./pages/About";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +23,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/nearby-stops" element={<NearbyStops />} />
           <Route path="/trip-planner" element={<TripPlanner />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

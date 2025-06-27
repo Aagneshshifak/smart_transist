@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from 'react-router-dom';
-import { Bus, MapPin, Map } from 'lucide-react';
+import { Bus, MapPin, Map, Info, User } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
@@ -10,6 +10,7 @@ const Navbar = () => {
     { path: '/', label: 'Home', icon: Bus },
     { path: '/nearby-stops', label: 'Nearby', icon: MapPin },
     { path: '/trip-planner', label: 'Plan Trip', icon: Map },
+    { path: '/about', label: 'About', icon: Info },
   ];
 
   return (
@@ -38,7 +39,16 @@ const Navbar = () => {
                 <span>{label}</span>
               </Link>
             ))}
-            <ThemeToggle />
+            <div className="flex items-center space-x-3">
+              <ThemeToggle />
+              <Link
+                to="/login"
+                className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-blue-400 hover:bg-gray-800 transition-colors"
+              >
+                <User className="h-4 w-4" />
+                <span>Login</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -62,7 +72,16 @@ const Navbar = () => {
               </Link>
             ))}
           </div>
-          <ThemeToggle />
+          <div className="flex items-center space-x-2">
+            <ThemeToggle />
+            <Link
+              to="/login"
+              className="flex flex-col items-center py-2 px-3 text-xs font-medium text-gray-400 hover:text-blue-400 transition-colors"
+            >
+              <User className="h-5 w-5 mb-1" />
+              <span>Login</span>
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
