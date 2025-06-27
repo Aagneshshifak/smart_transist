@@ -1,12 +1,101 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { Link } from 'react-router-dom';
+import { MapPin, Map, Bus, ArrowRight } from 'lucide-react';
+import Navbar from '../components/Navbar';
+import Card from '../components/Card';
 
 const Index = () => {
+  const features = [
+    {
+      icon: MapPin,
+      title: 'Find Nearby Stops',
+      description: 'Discover bus and train stops near your current location',
+      link: '/nearby-stops',
+      color: 'text-green-600 bg-green-50'
+    },
+    {
+      icon: Map,
+      title: 'Plan Your Trip',
+      description: 'Get the best route suggestions for your journey',
+      link: '/trip-planner',
+      color: 'text-blue-600 bg-blue-50'
+    }
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <Navbar />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="flex justify-center mb-6">
+            <div className="bg-blue-600 p-4 rounded-full">
+              <Bus className="h-12 w-12 text-white" />
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            Smart Public Transport
+            <span className="block text-blue-600">Assistant</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Navigate your city with confidence. Find nearby stops, plan optimal routes, 
+            and get real-time updates for all your public transportation needs.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/nearby-stops"
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+            >
+              Find Nearby Stops
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/trip-planner"
+              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold border-2 border-blue-600 hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+            >
+              Plan a Trip
+              <Map className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {features.map(({ icon: Icon, title, description, link, color }) => (
+            <Link key={title} to={link}>
+              <Card hover className="h-full">
+                <div className="text-center">
+                  <div className={`inline-flex p-3 rounded-full ${color} mb-4`}>
+                    <Icon className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+                  <p className="text-gray-600">{description}</p>
+                  <div className="mt-4 inline-flex items-center text-blue-600 font-medium">
+                    Get Started
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </div>
+
+        {/* Info Section */}
+        <Card className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4">Coming Soon</h2>
+            <p className="text-blue-100 mb-6">
+              Real-time arrivals, route optimization, and offline maps powered by Google Maps API
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <span className="bg-white/20 px-3 py-1 rounded-full">Real-time Updates</span>
+              <span className="bg-white/20 px-3 py-1 rounded-full">Route Optimization</span>
+              <span className="bg-white/20 px-3 py-1 rounded-full">Offline Support</span>
+            </div>
+          </div>
+        </Card>
+      </main>
     </div>
   );
 };
