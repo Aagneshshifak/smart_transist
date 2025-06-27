@@ -1,100 +1,176 @@
 
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Bus, User, Mail } from 'lucide-react';
+import { Bus, Mail, Apple, Microsoft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 
 const Login = () => {
+  const [authMethod, setAuthMethod] = useState<'phone' | 'email'>('phone');
+  const [countryCode, setCountryCode] = useState('+91');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+
   const handleSocialLogin = (provider: string) => {
     console.log(`Login with ${provider}`);
-    // TODO: Implement Firebase authentication
+    // TODO: Implement authentication
   };
 
-  const handleGuestLogin = () => {
-    console.log('Continue as guest');
-    // TODO: Implement guest login logic
+  const handleContinue = () => {
+    if (authMethod === 'phone') {
+      console.log('Continue with phone:', countryCode + phoneNumber);
+    } else {
+      console.log('Continue with email:', email);
+    }
+    // TODO: Implement authentication logic
+  };
+
+  const handleEmailLogin = () => {
+    setAuthMethod('email');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#cce0ff] to-white dark:from-[#0a192f] dark:to-[#1c1c3a]">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-black dark:to-gray-900">
       <Navbar />
       
-      <main className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 p-4 rounded-full transition-colors">
-              <Bus className="h-8 w-8 text-white" />
+      <main className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <div className="bg-black dark:bg-white p-3 rounded-lg">
+              <Bus className="h-8 w-8 text-white dark:text-black" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-700 dark:text-slate-100">Sign in to access your Smart Transit account</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Welcome back</h1>
         </div>
 
-        <Card className="mb-6">
+        <div className="space-y-6">
+          {/* Phone/Email Input Section */}
           <div className="space-y-4">
-            <button
-              onClick={() => handleSocialLogin('Google')}
-              className="w-full flex items-center justify-center space-x-3 bg-white hover:bg-gray-100 dark:bg-gray-100 dark:hover:bg-gray-200 text-gray-900 font-medium py-3 px-4 rounded-lg transition-colors"
+            {authMethod === 'phone' ? (
+              <>
+                <div className="space-y-2">
+                  <Select value="India (+91)" onValueChange={() => {}}>
+                    <SelectTrigger className="w-full h-12 text-base border-gray-300 dark:border-gray-600 rounded-xl">
+                      <SelectValue placeholder="India (+91)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="India (+91)">India (+91)</SelectItem>
+                      <SelectItem value="USA (+1)">USA (+1)</SelectItem>
+                      <SelectItem value="UK (+44)">UK (+44)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-blue-600 dark:text-blue-400 text-sm font-medium">
+                    Phone number
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="+91"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="w-full h-12 text-base border-gray-300 dark:border-gray-600 rounded-xl pl-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-blue-600 dark:text-blue-400 text-sm font-medium">
+                  Email address
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full h-12 text-base border-gray-300 dark:border-gray-600 rounded-xl pl-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            )}
+
+            <Button 
+              onClick={handleContinue}
+              className="w-full h-12 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 dark:text-black text-white rounded-xl text-base font-medium transition-colors"
             >
-              <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+              Continue
+            </Button>
+          </div>
+
+          {/* Sign up link */}
+          <div className="text-center">
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Don't have an account?{' '}
+              <Link to="/signup" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+                Sign up
+              </Link>
+            </p>
+          </div>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white dark:bg-black text-gray-500 dark:text-gray-400 font-medium">OR</span>
+            </div>
+          </div>
+
+          {/* Social Login Options */}
+          <div className="space-y-3">
+            <Button
+              onClick={handleEmailLogin}
+              variant="outline"
+              className="w-full h-12 border-gray-300 dark:border-gray-600 rounded-xl text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              <Mail className="h-5 w-5 mr-3" />
+              Continue with email
+            </Button>
+
+            <Button
+              onClick={() => handleSocialLogin('Google')}
+              variant="outline"
+              className="w-full h-12 border-gray-300 dark:border-gray-600 rounded-xl text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              <div className="w-5 h-5 mr-3 bg-red-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs font-bold">G</span>
               </div>
-              <span>Continue with Google</span>
-            </button>
+              Continue with Google
+            </Button>
 
-            <button
-              onClick={() => handleSocialLogin('Facebook')}
-              className="w-full flex items-center justify-center space-x-3 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+            <Button
+              onClick={() => handleSocialLogin('Microsoft')}
+              variant="outline"
+              className="w-full h-12 border-gray-300 dark:border-gray-600 rounded-xl text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
-              <div className="w-5 h-5 bg-blue-700 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">f</span>
-              </div>
-              <span>Continue with Facebook</span>
-            </button>
+              <Microsoft className="h-5 w-5 mr-3 text-blue-600" />
+              Continue with Microsoft Account
+            </Button>
 
-            <button
-              onClick={() => handleSocialLogin('Twitter')}
-              className="w-full flex items-center justify-center space-x-3 bg-black hover:bg-gray-900 dark:bg-gray-900 dark:hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+            <Button
+              onClick={() => handleSocialLogin('Apple')}
+              variant="outline"
+              className="w-full h-12 border-gray-300 dark:border-gray-600 rounded-xl text-base font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
-              <div className="w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">𝕏</span>
-              </div>
-              <span>Continue with X (Twitter)</span>
-            </button>
+              <Apple className="h-5 w-5 mr-3" />
+              Continue with Apple
+            </Button>
           </div>
-
-          <div className="my-6 flex items-center">
-            <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
-            <span className="px-4 text-gray-500 dark:text-gray-400 text-sm">or</span>
-            <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
-          </div>
-
-          <button
-            onClick={handleGuestLogin}
-            className="w-full flex items-center justify-center space-x-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-colors"
-          >
-            <User className="h-5 w-5" />
-            <span>Continue as Guest</span>
-          </button>
-        </Card>
-
-        <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            By signing in, you agree to our{' '}
-            <Link to="/terms" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-              Terms of Service
-            </Link>{' '}
-            and{' '}
-            <Link to="/privacy" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-              Privacy Policy
-            </Link>
-          </p>
         </div>
 
         <div className="mt-8 text-center">
           <Link
             to="/"
-            className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-sm"
           >
             <span>← Back to Home</span>
           </Link>
