@@ -1,6 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { Bus, MapPin, Map } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const location = useLocation();
@@ -12,7 +13,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-700 sticky top-0 z-50 shadow-sm">
+    <nav className="bg-gray-900 dark:bg-gray-900 border-b border-gray-700 dark:border-gray-700 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -37,27 +38,31 @@ const Navbar = () => {
                 <span>{label}</span>
               </Link>
             ))}
+            <ThemeToggle />
           </div>
         </div>
       </div>
       
       {/* Mobile Navigation */}
       <div className="md:hidden border-t border-gray-700">
-        <div className="flex justify-around py-2">
-          {navItems.map(({ path, label, icon: Icon }) => (
-            <Link
-              key={path}
-              to={path}
-              className={`flex flex-col items-center py-2 px-3 text-xs font-medium transition-colors ${
-                location.pathname === path
-                  ? 'text-blue-400'
-                  : 'text-gray-400 hover:text-blue-400'
-              }`}
-            >
-              <Icon className="h-5 w-5 mb-1" />
-              <span>{label}</span>
-            </Link>
-          ))}
+        <div className="flex justify-between items-center py-2 px-4">
+          <div className="flex justify-around flex-1">
+            {navItems.map(({ path, label, icon: Icon }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`flex flex-col items-center py-2 px-3 text-xs font-medium transition-colors ${
+                  location.pathname === path
+                    ? 'text-blue-400'
+                    : 'text-gray-400 hover:text-blue-400'
+                }`}
+              >
+                <Icon className="h-5 w-5 mb-1" />
+                <span>{label}</span>
+              </Link>
+            ))}
+          </div>
+          <ThemeToggle />
         </div>
       </div>
     </nav>
