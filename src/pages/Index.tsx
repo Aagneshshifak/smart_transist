@@ -1,127 +1,257 @@
 
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Map, Bus, ArrowRight, Sparkles } from 'lucide-react';
+import { MapPin, Map, Bus, ArrowRight, Sparkles, Navigation, Clock, Shield } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import Card from '../components/Card';
 
 const Index = () => {
-  const features = [
-    {
-      icon: MapPin,
-      title: 'Find Nearby Stops',
-      description: 'Discover bus and train stops near your current location',
-      link: '/nearby-stops',
-      color: 'premium-gradient-green',
-      gradient: 'from-green-50 to-emerald-50 dark:from-green-500/20 dark:to-emerald-500/20'
-    },
-    {
-      icon: Map,
-      title: 'Plan Your Trip',
-      description: 'Get the best route suggestions for your journey',
-      link: '/trip-planner',
-      color: 'premium-gradient-blue',
-      gradient: 'from-blue-50 to-indigo-50 dark:from-blue-500/20 dark:to-indigo-500/20'
+  const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in');
+          entry.target.classList.remove('opacity-0', 'translate-y-10');
+        }
+      });
+    }, observerOptions);
+
+    sectionsRef.current.forEach((section) => {
+      if (section) {
+        observer.observe(section);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const addToRefs = (el: HTMLElement | null) => {
+    if (el && !sectionsRef.current.includes(el)) {
+      sectionsRef.current.push(el);
     }
-  ];
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#cce0ff] via-white to-[#e6f3ff] dark:bg-black dark:bg-gradient-to-br dark:from-black dark:via-gray-900/50 dark:to-black transition-all duration-500">
-      <div className="dark:bg-gradient-to-br dark:from-blue-900/10 dark:via-transparent dark:to-purple-900/10 dark:min-h-screen">
-        <Navbar />
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      <Navbar />
+      
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?q=80&w=3880&auto=format&fit=crop')`
+          }}
+        />
         
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 smooth-scroll">
-          {/* Hero Section */}
-          <div className="text-center mb-16 animate-fade-in">
-            <div className="flex justify-center mb-8">
-              <div className="relative group">
-                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-purple-500 rounded-full opacity-20 group-hover:opacity-40 animate-pulse transition-opacity duration-300"></div>
-                <div className="relative premium-gradient-blue hover:shadow-2xl hover:shadow-blue-500/50 dark:hover:shadow-blue-400/60 p-6 rounded-full transition-all duration-300 transform hover:scale-110 hover:rotate-3 shadow-xl">
-                  <Bus className="h-12 w-12 text-white" />
-                </div>
-              </div>
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-              Smart Public Transport
-              <span className="block bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent animate-scale-in animation-delay-200">
-                Assistant
+        {/* Overlay Content */}
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+          <div className="animate-fade-in">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
+              <span className="block text-white">Smart Public</span>
+              <span className="block bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                Transport
               </span>
             </h1>
             
-            <p className="text-xl text-gray-700 dark:text-gray-200 max-w-3xl mx-auto mb-8 leading-relaxed animate-slide-up animation-delay-300">
-              Navigate your city with confidence. Find nearby stops, plan optimal routes, 
-              and get real-time updates for all your public transportation needs.
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Navigate your city with confidence. Experience the future of public transportation.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up animation-delay-300">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link
                 to="/nearby-stops"
-                className="group premium-gradient-blue hover:shadow-xl hover:shadow-blue-500/40 dark:hover:shadow-blue-400/60 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-1 hover:scale-105"
+                className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
               >
-                Find Nearby Stops
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                <span className="relative z-10">Find Nearby Stops</span>
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200 relative z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
+              
               <Link
                 to="/trip-planner"
-                className="group bg-white/90 hover:bg-white dark:bg-black/90 dark:hover:bg-black/95 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-xl font-semibold border-2 border-blue-500/20 dark:border-blue-400/40 hover:border-blue-500/40 dark:hover:border-blue-400/60 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-400/40 transform hover:-translate-y-1 hover:scale-105 backdrop-blur-sm"
+                className="group border-2 border-gray-600 hover:border-blue-400 text-white hover:text-blue-400 px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/10 backdrop-blur-sm"
               >
-                Plan a Trip
-                <Map className="h-4 w-4 group-hover:rotate-12 transition-transform duration-200" />
+                <span>Plan Your Journey</span>
+                <Map className="h-5 w-5 group-hover:rotate-12 transition-transform duration-200" />
               </Link>
             </div>
           </div>
+        </div>
 
-          {/* Features Section */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            {features.map(({ icon: Icon, title, description, link, color, gradient }, index) => (
-              <Link key={title} to={link} className="animate-fade-in" style={{ animationDelay: `${(index + 1) * 200}ms` }}>
-                <Card hover className="h-full group relative overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                  <div className="relative text-center">
-                    <div className={`inline-flex p-4 rounded-2xl ${color} mb-6 shadow-lg group-hover:shadow-xl group-hover:shadow-blue-500/30 dark:group-hover:shadow-blue-400/50 transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-3`}>
-                      <Icon className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">{description}</p>
-                    <div className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
-                      Get Started
-                      <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-            ))}
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section 
+        ref={addToRefs}
+        className="min-h-screen bg-gradient-to-b from-black to-gray-900 py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-10 transition-all duration-1000"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                Powerful Features
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Everything you need for seamless public transportation
+            </p>
           </div>
 
-          {/* Info Section */}
-          <div className="animate-fade-in animation-delay-300">
-            <Card className="relative overflow-hidden">
-              <div className="absolute inset-0 premium-gradient-purple opacity-90"></div>
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-10"></div>
-              <div className="relative text-center text-white p-8">
-                <div className="flex justify-center mb-4">
-                  <Sparkles className="h-8 w-8 text-yellow-300 animate-pulse" />
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="group relative overflow-hidden bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-blue-500/50 rounded-2xl p-8 transition-all duration-500 hover:transform hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="inline-flex p-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 mb-6 group-hover:shadow-2xl group-hover:shadow-blue-500/25 transition-all duration-300">
+                  <MapPin className="h-8 w-8 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold mb-4">Coming Soon</h2>
-                <p className="text-blue-100 dark:text-purple-100 mb-8 text-lg leading-relaxed max-w-2xl mx-auto">
-                  Real-time arrivals, route optimization, and offline maps powered by Google Maps API
+                <h3 className="text-2xl font-bold mb-4 group-hover:text-blue-400 transition-colors duration-300">
+                  Smart Location Detection
+                </h3>
+                <p className="text-gray-400 mb-6 leading-relaxed">
+                  Automatically discover nearby bus and train stops with precise location tracking
                 </p>
-                <div className="flex flex-wrap justify-center gap-3 text-sm">
-                  {['Real-time Updates', 'Route Optimization', 'Offline Support'].map((feature, index) => (
-                    <span 
-                      key={feature}
-                      className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30 hover:bg-white/30 hover:shadow-lg hover:shadow-white/20 transition-all duration-300 transform hover:scale-105 animate-fade-in"
-                      style={{ animationDelay: `${index * 100 + 500}ms` }}
-                    >
-                      {feature}
-                    </span>
-                  ))}
+                <Link 
+                  to="/nearby-stops"
+                  className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group-hover:translate-x-2 transition-all duration-300"
+                >
+                  Explore <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-purple-500/50 rounded-2xl p-8 transition-all duration-500 hover:transform hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="inline-flex p-4 rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 mb-6 group-hover:shadow-2xl group-hover:shadow-purple-500/25 transition-all duration-300">
+                  <Navigation className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 group-hover:text-purple-400 transition-colors duration-300">
+                  Intelligent Route Planning
+                </h3>
+                <p className="text-gray-400 mb-6 leading-relaxed">
+                  Get optimized routes with real-time updates and alternative options
+                </p>
+                <Link 
+                  to="/trip-planner"
+                  className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium group-hover:translate-x-2 transition-all duration-300"
+                >
+                  Plan Trip <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Real-time Updates Section */}
+      <section 
+        ref={addToRefs}
+        className="min-h-screen bg-gradient-to-b from-gray-900 to-black py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-10 transition-all duration-1000"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-bold mb-6">
+                <span className="text-white">Real-time</span>
+                <br />
+                <span className="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+                  Intelligence
+                </span>
+              </h2>
+              <p className="text-xl text-gray-400 mb-8 leading-relaxed">
+                Stay informed with live arrival times, service disruptions, and route changes. 
+                Never miss your connection again.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center">
+                    <Clock className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-lg text-gray-300">Live arrival predictions</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-lg text-gray-300">Service alerts & notifications</span>
                 </div>
               </div>
-            </Card>
+            </div>
+            
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-3xl blur-3xl"></div>
+              <div className="relative bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-3xl p-8 backdrop-blur-sm">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
+                    <span className="text-green-400 font-medium">Bus 42 - Downtown</span>
+                    <span className="text-green-300 text-sm">2 min</span>
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                    <span className="text-blue-400 font-medium">Metro Line A</span>
+                    <span className="text-blue-300 text-sm">5 min</span>
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
+                    <span className="text-yellow-400 font-medium">Bus 18 - Airport</span>
+                    <span className="text-yellow-300 text-sm">Delayed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </section>
+
+      {/* Coming Soon Section */}
+      <section 
+        ref={addToRefs}
+        className="min-h-screen bg-gradient-to-b from-black to-gray-900 py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-10 transition-all duration-1000"
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-3xl blur-3xl"></div>
+            <div className="relative bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-3xl p-12 backdrop-blur-sm">
+              <Sparkles className="h-16 w-16 text-purple-400 mx-auto mb-8 animate-pulse" />
+              <h2 className="text-4xl md:text-6xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+                  What's Next
+                </span>
+              </h2>
+              <p className="text-xl text-gray-400 mb-12 leading-relaxed">
+                The future of urban mobility is here. Advanced AI-powered features coming soon.
+              </p>
+              
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="p-6 bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20 rounded-xl">
+                  <h3 className="text-lg font-semibold text-purple-400 mb-2">AI Route Optimization</h3>
+                  <p className="text-gray-500 text-sm">Smart routing with machine learning</p>
+                </div>
+                <div className="p-6 bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/20 rounded-xl">
+                  <h3 className="text-lg font-semibold text-blue-400 mb-2">Offline Maps</h3>
+                  <p className="text-gray-500 text-sm">Navigate without internet connection</p>
+                </div>
+                <div className="p-6 bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/20 rounded-xl">
+                  <h3 className="text-lg font-semibold text-green-400 mb-2">Carbon Tracking</h3>
+                  <p className="text-gray-500 text-sm">Monitor your environmental impact</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
