@@ -5,11 +5,11 @@ import { Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState('');
 
   const handleSocialLogin = (provider: string) => {
-    console.log(`Login with ${provider}`);
+    console.log(`Sign up with ${provider}`);
     // TODO: Implement authentication
   };
 
@@ -23,7 +23,7 @@ const Login = () => {
       <div className="max-w-sm w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-normal text-gray-900 mb-8">Welcome back</h1>
+          <h1 className="text-3xl font-normal text-gray-900 mb-8">Create an account</h1>
         </div>
 
         {/* Main Form */}
@@ -49,16 +49,16 @@ const Login = () => {
           </Button>
         </div>
 
-        {/* Sign up link */}
+        {/* Login link */}
         <div className="text-center">
           <p className="text-gray-600 text-sm">
-            Don't have an account?{' '}
+            Already have an account?{' '}
             <Link 
-              id="signup-link"
-              to="/signup" 
+              id="login-link"
+              to="/login" 
               className="text-green-600 hover:text-green-700 font-medium"
             >
-              Sign up
+              Log in
             </Link>
           </p>
         </div>
@@ -76,7 +76,7 @@ const Login = () => {
         {/* Social Login Options */}
         <div className="space-y-3">
           <Button
-            id="phone-login-button"
+            id="phone-signup-button"
             onClick={() => handleSocialLogin('Phone')}
             variant="outline"
             className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
@@ -86,7 +86,7 @@ const Login = () => {
           </Button>
 
           <Button
-            id="google-login-button"
+            id="google-signup-button"
             onClick={() => handleSocialLogin('Google')}
             variant="outline"
             className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
@@ -98,7 +98,7 @@ const Login = () => {
           </Button>
 
           <Button
-            id="microsoft-login-button"
+            id="microsoft-signup-button"
             onClick={() => handleSocialLogin('Microsoft')}
             variant="outline"
             className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
@@ -115,7 +115,7 @@ const Login = () => {
           </Button>
 
           <Button
-            id="apple-login-button"
+            id="apple-signup-button"
             onClick={() => handleSocialLogin('Apple')}
             variant="outline"
             className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
@@ -140,4 +140,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
