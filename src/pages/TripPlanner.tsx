@@ -1,10 +1,13 @@
 
 import { useState } from 'react';
-import { Map, ArrowRight, Bus, Clock, DollarSign, Navigation, Hotel, UtensilsCrossed, ChevronDown, ExternalLink } from 'lucide-react';
+import { Map, Bus } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import MapSection from '../components/MapSection';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
+import RouteSearchForm from '../components/RouteSearchForm';
+import RouteOptions from '../components/RouteOptions';
+import HotelRecommendations from '../components/HotelRecommendations';
+import RestaurantRecommendations from '../components/RestaurantRecommendations';
 
 interface RouteOption {
   id: string;
@@ -25,8 +28,6 @@ interface Recommendation {
 }
 
 const TripPlanner = () => {
-  const [fromLocation, setFromLocation] = useState('');
-  const [toLocation, setToLocation] = useState('');
   const [routes, setRoutes] = useState<RouteOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
@@ -124,13 +125,7 @@ const TripPlanner = () => {
     }
   ];
 
-  const handlePlanTrip = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!fromLocation.trim() || !toLocation.trim()) {
-      return;
-    }
-
+  const handlePlanTrip = (fromLocation: string, toLocation: string) => {
     setLoading(true);
     console.log('Planning trip from:', fromLocation, 'to:', toLocation);
     
@@ -141,8 +136,6 @@ const TripPlanner = () => {
   };
 
   const clearSearch = () => {
-    setFromLocation('');
-    setToLocation('');
     setRoutes([]);
     setSelectedRoute(null);
     setHotelsOpen(false);
@@ -156,33 +149,6 @@ const TripPlanner = () => {
   const totalDistance = 50;
   const showRecommendations = routes.length > 0 && totalDistance >= 200;
 
-  const RecommendationCard = ({ item, icon: Icon }: { item: Recommendation; icon: any }) => (
-    <div className="p-4 border rounded-lg hover:border-blue-300 transition-colors">
-      <div className="flex items-start gap-3">
-        <Icon size={16} className="text-blue-600 mt-1" />
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-1">
-            <h4 className="font-medium text-sm">{item.name}</h4>
-            {item.rating && (
-              <div className="flex items-center gap-1 text-xs">
-                <span className="text-yellow-500">★</span>
-                <span>{item.rating}</span>
-              </div>
-            )}
-          </div>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-            {item.description}
-          </p>
-          {item.link && (
-            <button className="text-xs text-blue-600 hover:text-blue-700">
-              View Details
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
@@ -194,104 +160,20 @@ const TripPlanner = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Search Form */}
+          {/* Search Form and Route Options */}
           <div className="space-y-6">
-            <Card>
-              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Navigation className="h-4 w-4" />
-                Plan Your Route
-              </h2>
-              
-              <form onSubmit={handlePlanTrip} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">From</label>
-                  <input
-                    type="text"
-                    value={fromLocation}
-                    onChange={(e) => setFromLocation(e.target.value)}
-                    placeholder="Enter starting location"
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-1">To</label>
-                  <input
-                    type="text"
-                    value={toLocation}
-                    onChange={(e) => setToLocation(e.target.value)}
-                    placeholder="Enter destination"
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg disabled:bg-blue-400 flex items-center justify-center gap-2"
-                  >
-                    <Map className="h-4 w-4" />
-                    {loading ? 'Planning...' : 'Plan Trip'}
-                  </button>
-                  
-                  {routes.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={clearSearch}
-                      className="px-4 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      Clear
-                    </button>
-                  )}
-                </div>
-              </form>
-            </Card>
+            <RouteSearchForm 
+              onPlanTrip={handlePlanTrip}
+              onClear={clearSearch}
+              loading={loading}
+              hasRoutes={routes.length > 0}
+            />
 
-            {/* Route Options */}
-            {routes.length > 0 && (
-              <Card>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Bus className="h-4 w-4" />
-                  Route Options
-                </h3>
-                
-                <div className="space-y-3">
-                  {routes.map((route, index) => (
-                    <div
-                      key={route.id}
-                      onClick={() => handleRouteSelect(route.id)}
-                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                        selectedRoute === route.id
-                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                          : 'hover:border-blue-300'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded">
-                            Option {index + 1}
-                          </span>
-                          <span className="font-semibold">{route.duration}</span>
-                        </div>
-                        <span className="text-sm font-semibold text-green-600">{route.cost}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-2">
-                        <span>{route.transfers} transfer{route.transfers !== 1 ? 's' : ''}</span>
-                        <span>{route.walkTime} walking</span>
-                      </div>
-                      
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
-                        {route.steps.join(' → ')}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            )}
+            <RouteOptions 
+              routes={routes}
+              selectedRoute={selectedRoute}
+              onRouteSelect={handleRouteSelect}
+            />
           </div>
 
           {/* Map and Details */}
@@ -323,49 +205,17 @@ const TripPlanner = () => {
             {/* Recommendations */}
             {showRecommendations && (
               <div className="space-y-4">
-                {/* Hotels */}
-                <Card>
-                  <Collapsible open={hotelsOpen} onOpenChange={setHotelsOpen}>
-                    <CollapsibleTrigger className="w-full">
-                      <div className="flex items-center justify-between py-2">
-                        <div className="flex items-center gap-2">
-                          <Hotel size={16} />
-                          <h3 className="font-semibold">🏨 Recommended Hotels</h3>
-                        </div>
-                        <ChevronDown className={`h-4 w-4 transition-transform ${hotelsOpen ? 'rotate-180' : ''}`} />
-                      </div>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="pt-4">
-                      <div className="grid gap-3">
-                        {mockHotels.map((hotel) => (
-                          <RecommendationCard key={hotel.id} item={hotel} icon={Hotel} />
-                        ))}
-                      </div>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </Card>
+                <HotelRecommendations 
+                  hotels={mockHotels}
+                  isOpen={hotelsOpen}
+                  onToggle={setHotelsOpen}
+                />
 
-                {/* Restaurants */}
-                <Card>
-                  <Collapsible open={restaurantsOpen} onOpenChange={setRestaurantsOpen}>
-                    <CollapsibleTrigger className="w-full">
-                      <div className="flex items-center justify-between py-2">
-                        <div className="flex items-center gap-2">
-                          <UtensilsCrossed size={16} />
-                          <h3 className="font-semibold">🍽️ Suggested Restaurants</h3>
-                        </div>
-                        <ChevronDown className={`h-4 w-4 transition-transform ${restaurantsOpen ? 'rotate-180' : ''}`} />
-                      </div>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="pt-4">
-                      <div className="grid gap-3">
-                        {mockRestaurants.map((restaurant) => (
-                          <RecommendationCard key={restaurant.id} item={restaurant} icon={UtensilsCrossed} />
-                        ))}
-                      </div>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </Card>
+                <RestaurantRecommendations 
+                  restaurants={mockRestaurants}
+                  isOpen={restaurantsOpen}
+                  onToggle={setRestaurantsOpen}
+                />
               </div>
             )}
           </div>
