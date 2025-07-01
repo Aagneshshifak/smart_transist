@@ -2,13 +2,11 @@
 import { useState } from 'react';
 import { Navigation } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import TimeThemeToggle from '../components/TimeThemeToggle';
 import MapSection from '../components/MapSection';
 import RouteSearchForm from '../components/RouteSearchForm';
 import RouteOptions from '../components/RouteOptions';
 import HotelRecommendations from '../components/HotelRecommendations';
 import RestaurantRecommendations from '../components/RestaurantRecommendations';
-import { useTimeBasedTheme } from '../hooks/useTimeBasedTheme';
 
 interface RouteOption {
   id: string;
@@ -34,7 +32,6 @@ const TripPlanner = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
   const [hotelsOpen, setHotelsOpen] = useState(false);
   const [restaurantsOpen, setRestaurantsOpen] = useState(false);
-  const { theme, isTransitioning } = useTimeBasedTheme();
 
   // Mock route data
   const mockRoutes: RouteOption[] = [
@@ -152,17 +149,16 @@ const TripPlanner = () => {
   const showRecommendations = routes.length > 0 && totalDistance >= 200;
 
   return (
-    <div className={`min-h-screen ${theme === 'day' ? 'bg-white text-black' : 'bg-black text-white'} ${isTransitioning ? 'opacity-95' : 'opacity-100'} transition-all duration-1000`}>
+    <div className="min-h-screen bg-white text-black">
       <Navbar />
-      <TimeThemeToggle />
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className={`text-4xl md:text-6xl font-light mb-6 tracking-tight ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+          <h1 className="text-4xl md:text-6xl font-light mb-6 tracking-tight text-black">
             Plan Trip.
           </h1>
-          <p className={`text-xl font-light mb-12 ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+          <p className="text-xl font-light mb-12 text-gray-600">
             Find the perfect route for your journey.
           </p>
         </div>
@@ -175,8 +171,8 @@ const TripPlanner = () => {
             
             {/* Search Form and Route Options */}
             <div className="space-y-6">
-              <div className={`rounded-3xl p-8 ${theme === 'day' ? 'bg-gray-50' : 'bg-gray-900'}`}>
-                <h2 className={`text-xl font-medium mb-6 flex items-center gap-2 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+              <div className="rounded-3xl p-8 bg-gray-50">
+                <h2 className="text-xl font-medium mb-6 flex items-center gap-2 text-black">
                   <Navigation className="h-5 w-5" />
                   Plan Your Route
                 </h2>
@@ -189,7 +185,7 @@ const TripPlanner = () => {
               </div>
 
               {routes.length > 0 && (
-                <div className={`rounded-3xl p-8 ${theme === 'day' ? 'bg-gray-50' : 'bg-gray-900'}`}>
+                <div className="rounded-3xl p-8 bg-gray-50">
                   <RouteOptions 
                     routes={routes}
                     selectedRoute={selectedRoute}
@@ -201,8 +197,8 @@ const TripPlanner = () => {
 
             {/* Map and Details */}
             <div className="lg:col-span-2 space-y-6">
-              <div className={`rounded-3xl p-8 ${theme === 'day' ? 'bg-gray-50' : 'bg-gray-900'}`}>
-                <h2 className={`text-xl font-medium mb-6 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+              <div className="rounded-3xl p-8 bg-gray-50">
+                <h2 className="text-xl font-medium mb-6 text-black">
                   Route Map
                 </h2>
                 <div className="rounded-2xl overflow-hidden">
@@ -211,8 +207,8 @@ const TripPlanner = () => {
                 
                 {routes.length === 0 && !loading && (
                   <div className="mt-8 text-center">
-                    <Navigation className={`h-12 w-12 mx-auto mb-4 ${theme === 'day' ? 'text-gray-400' : 'text-gray-500'}`} />
-                    <p className={`${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <Navigation className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+                    <p className="text-gray-600">
                       Enter your locations to see routes
                     </p>
                   </div>
@@ -221,7 +217,7 @@ const TripPlanner = () => {
                 {loading && (
                   <div className="mt-8 text-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent mx-auto mb-4"></div>
-                    <p className={`${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <p className="text-gray-600">
                       Finding routes...
                     </p>
                   </div>
