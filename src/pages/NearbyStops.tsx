@@ -2,8 +2,9 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Bus, ArrowRight } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import Card from '../components/Card';
+import TimeThemeToggle from '../components/TimeThemeToggle';
 import MapSection from '../components/MapSection';
+import { useTimeBasedTheme } from '../hooks/useTimeBasedTheme';
 
 interface Stop {
   id: string;
@@ -18,6 +19,7 @@ const NearbyStops = () => {
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { theme, isTransitioning } = useTimeBasedTheme();
 
   // Mock data for demonstration
   const mockStops: Stop[] = [
@@ -79,49 +81,63 @@ const NearbyStops = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#cce0ff] to-white dark:from-[#0a192f] dark:to-[#1c1c3a] transition-all duration-300 ease-in-out">
+    <div className={`min-h-screen ${theme === 'day' ? 'bg-white text-black' : 'bg-black text-white'} ${isTransitioning ? 'opacity-95' : 'opacity-100'} transition-all duration-1000`}>
       <Navbar />
+      <TimeThemeToggle />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">Nearby Stops</h1>
-          <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">Find bus and train stops near your current location</p>
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className={`text-4xl md:text-6xl font-light mb-6 tracking-tight ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+            Nearby Stops.
+          </h1>
+          <p className={`text-xl font-light mb-12 ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+            Discover transit options around you.
+          </p>
         </div>
+      </section>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Map Section */}
-          <div>
-            <Card>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Location Map</h2>
-              <MapSection height="h-80" />
-              
-              <div className="mt-4">
-                <button
-                  onClick={getCurrentLocation}
-                  disabled={loading}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 transition-all duration-300 ease-in-out flex items-center justify-center gap-2"
-                >
-                  <MapPin className="h-4 w-4" />
-                  {loading ? 'Getting Location...' : 'Update Location'}
-                </button>
-                
-                {error && (
-                  <p className="text-red-600 text-sm mt-2 text-center">{error}</p>
-                )}
-                
-                {location && (
-                  <p className="text-green-600 text-sm mt-2 text-center">
-                    Location updated successfully
-                  </p>
-                )}
+      {/* Main Content */}
+      <section className="pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12">
+            
+            {/* Map Section */}
+            <div className={`rounded-3xl p-8 ${theme === 'day' ? 'bg-gray-50' : 'bg-gray-900'}`}>
+              <h2 className={`text-2xl font-medium mb-6 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+                Your Location
+              </h2>
+              <div className="mb-6">
+                <MapSection height="h-80" />
               </div>
-            </Card>
-          </div>
+              
+              <button
+                onClick={getCurrentLocation}
+                disabled={loading}
+                className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-200 ${
+                  theme === 'day' 
+                    ? 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400' 
+                    : 'bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-400'
+                }`}
+              >
+                <MapPin className="h-4 w-4 inline mr-2" />
+                {loading ? 'Getting Location...' : 'Update Location'}
+              </button>
+              
+              {error && (
+                <p className="text-red-500 text-sm mt-3 text-center">{error}</p>
+              )}
+              
+              {location && (
+                <p className="text-green-500 text-sm mt-3 text-center">
+                  Location updated successfully
+                </p>
+              )}
+            </div>
 
-          {/* Stops List */}
-          <div>
-            <Card>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            {/* Stops List */}
+            <div className={`rounded-3xl p-8 ${theme === 'day' ? 'bg-gray-50' : 'bg-gray-900'}`}>
+              <h2 className={`text-2xl font-medium mb-6 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
                 Nearby Stops ({mockStops.length})
               </h2>
               
@@ -129,23 +145,37 @@ const NearbyStops = () => {
                 {mockStops.map((stop) => (
                   <div
                     key={stop.id}
-                    className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300 ease-in-out cursor-pointer"
+                    className={`p-6 rounded-2xl border transition-all duration-300 cursor-pointer hover:scale-105 ${
+                      theme === 'day' 
+                        ? 'bg-white border-gray-200 hover:border-blue-300 hover:shadow-lg' 
+                        : 'bg-black border-gray-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10'
+                    }`}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Bus className={`h-4 w-4 ${stop.type === 'bus' ? 'text-green-600' : 'text-blue-600'}`} />
-                          <h3 className="font-medium text-gray-900 dark:text-white">{stop.name}</h3>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">• {stop.distance}</span>
+                        <div className="flex items-center gap-3 mb-3">
+                          <Bus className={`h-5 w-5 ${stop.type === 'bus' ? 'text-green-500' : 'text-blue-500'}`} />
+                          <h3 className={`font-medium text-lg ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+                            {stop.name}
+                          </h3>
+                          <span className={`text-sm ${theme === 'day' ? 'text-gray-500' : 'text-gray-400'}`}>
+                            • {stop.distance}
+                          </span>
                         </div>
                         
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{stop.walkTime}</p>
+                        <p className={`text-sm mb-3 ${theme === 'day' ? 'text-gray-600' : 'text-gray-300'}`}>
+                          {stop.walkTime}
+                        </p>
                         
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {stop.routes.map((route) => (
                             <span
                               key={route}
-                              className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full transition-colors duration-300"
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                theme === 'day' 
+                                  ? 'bg-gray-100 text-gray-700' 
+                                  : 'bg-gray-800 text-gray-300'
+                              }`}
                             >
                               {route}
                             </span>
@@ -153,23 +183,27 @@ const NearbyStops = () => {
                         </div>
                       </div>
                       
-                      <ArrowRight className="h-4 w-4 text-gray-400 dark:text-gray-500 mt-1" />
+                      <ArrowRight className={`h-5 w-5 mt-1 ${theme === 'day' ? 'text-gray-400' : 'text-gray-500'}`} />
                     </div>
                   </div>
                 ))}
               </div>
               
               {mockStops.length === 0 && (
-                <div className="text-center py-8">
-                  <MapPin className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400">No stops found in your area</p>
-                  <p className="text-gray-400 dark:text-gray-500 text-sm">Try updating your location</p>
+                <div className="text-center py-12">
+                  <MapPin className={`h-16 w-16 mx-auto mb-4 ${theme === 'day' ? 'text-gray-400' : 'text-gray-500'}`} />
+                  <p className={`${theme === 'day' ? 'text-gray-500' : 'text-gray-400'}`}>
+                    No stops found in your area
+                  </p>
+                  <p className={`text-sm mt-1 ${theme === 'day' ? 'text-gray-400' : 'text-gray-500'}`}>
+                    Try updating your location
+                  </p>
                 </div>
               )}
-            </Card>
+            </div>
           </div>
         </div>
-      </main>
+      </section>
     </div>
   );
 };
