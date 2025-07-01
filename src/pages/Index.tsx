@@ -1,6 +1,7 @@
+
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Map, Bus, ArrowRight, Sparkles, Navigation, Clock, Shield } from 'lucide-react';
+import { MapPin, Map, Bus, ArrowRight, Navigation, Clock, Shield } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import TimeThemeToggle from '../components/TimeThemeToggle';
 import { useTimeBasedTheme } from '../hooks/useTimeBasedTheme';
@@ -39,269 +40,189 @@ const Index = () => {
     }
   };
 
-  // Dynamic styles based on time theme
-  const getThemeStyles = () => {
-    if (theme === 'day') {
-      return {
-        heroBackground: `linear-gradient(rgba(255, 255, 255, 0.2), rgba(135, 206, 235, 0.3)), url('https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?q=80&w=4928&auto=format&fit=crop')`,
-        textColor: 'text-gray-900',
-        headingColor: 'text-gray-900',
-        subTextColor: 'text-gray-700',
-        sectionBg: 'bg-gradient-to-b from-sky-50 to-blue-50',
-        sectionBgAlt: 'bg-gradient-to-b from-blue-50 to-sky-25',
-        cardBg: 'from-white/95 to-blue-50/95 border-blue-200/50 backdrop-blur-xl',
-        cardHover: 'hover:from-white to-blue-100/95 hover:border-blue-300/70',
-        buttonPrimary: 'from-blue-500 to-sky-500 hover:from-blue-400 hover:to-sky-400 shadow-blue-500/30',
-        buttonSecondary: 'border-gray-400 hover:border-blue-500 text-gray-700 hover:text-blue-500 shadow-blue-500/15',
-        featureAccent: 'from-blue-500 to-sky-500',
-        gradientText: 'from-blue-600 to-sky-600',
-        glowEffect: 'shadow-blue-500/25'
-      };
-    } else {
-      return {
-        heroBackground: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?q=80&w=3880&auto=format&fit=crop')`,
-        textColor: 'text-white',
-        headingColor: 'text-white',
-        subTextColor: 'text-gray-300',
-        sectionBg: 'bg-gradient-to-b from-black to-gray-900',
-        sectionBgAlt: 'bg-gradient-to-b from-gray-900 to-black',
-        cardBg: 'from-gray-900/95 to-black/95 border-gray-800/50 backdrop-blur-xl',
-        cardHover: 'hover:from-gray-800/95 hover:to-black/95 hover:border-blue-500/50',
-        buttonPrimary: 'from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-blue-500/30',
-        buttonSecondary: 'border-gray-600 hover:border-blue-400 text-white hover:text-blue-400 shadow-blue-500/15',
-        featureAccent: 'from-blue-600 to-purple-600',
-        gradientText: 'from-blue-400 to-purple-500',
-        glowEffect: 'shadow-blue-500/40'
-      };
-    }
-  };
-
-  const styles = getThemeStyles();
-
   return (
-    <div className={`min-h-screen overflow-x-hidden transition-all duration-1000 ${theme === 'day' ? 'bg-sky-50' : 'bg-black text-white'} ${isTransitioning ? 'opacity-95' : 'opacity-100'}`}>
+    <div className={`min-h-screen ${theme === 'day' ? 'bg-white text-black' : 'bg-black text-white'} ${isTransitioning ? 'opacity-95' : 'opacity-100'} transition-all duration-1000`}>
       <Navbar />
       <TimeThemeToggle />
       
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 scale-105"
-          style={{ backgroundImage: styles.heroBackground }}
-        />
-        
-        {/* Animated Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20"></div>
-        
-        {/* Overlay Content */}
-        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-          <div className="animate-fade-in">
-            <h1 className={`text-6xl md:text-8xl lg:text-9xl font-bold mb-8 leading-tight ${styles.headingColor} tracking-tight`}>
-              <span className="block">Smart Public</span>
-              <span className={`block bg-gradient-to-r ${styles.gradientText} bg-clip-text text-transparent`}>
-                Transport
-              </span>
-            </h1>
+      {/* Hero Section - Apple Style */}
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className={`text-4xl md:text-6xl lg:text-7xl font-light mb-6 tracking-tight ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+            Transport.
+          </h1>
+          <p className={`text-xl md:text-2xl font-light mb-12 ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+            The best way to navigate the city you love.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+            <Link
+              to="/nearby-stops"
+              className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${
+                theme === 'day' 
+                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                  : 'bg-blue-500 text-white hover:bg-blue-600'
+              }`}
+            >
+              Find Stops
+            </Link>
             
-            <p className={`text-xl md:text-3xl mb-16 max-w-4xl mx-auto leading-relaxed ${styles.subTextColor} font-light`}>
-              Navigate your city with confidence. Experience the future of public transportation.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-8 justify-center">
-              <Link
-                to="/nearby-stops"
-                className={`group relative overflow-hidden bg-gradient-to-r ${styles.buttonPrimary} text-white px-10 py-5 rounded-2xl font-semibold transition-all duration-500 flex items-center justify-center gap-4 transform hover:scale-110 hover:shadow-2xl ${styles.glowEffect}`}
-              >
-                <span className="relative z-10 text-lg">Find Nearby Stops</span>
-                <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform duration-300 relative z-10" />
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </Link>
-              
-              <Link
-                to="/trip-planner"
-                className={`group border-2 ${styles.buttonSecondary} px-10 py-5 rounded-2xl font-semibold transition-all duration-500 flex items-center justify-center gap-4 transform hover:scale-110 hover:shadow-2xl backdrop-blur-md`}
-              >
-                <span className="text-lg">Plan Your Journey</span>
-                <Map className="h-6 w-6 group-hover:rotate-12 transition-transform duration-300" />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Enhanced Scroll Indicator */}
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className={`w-8 h-12 border-2 rounded-full flex justify-center ${theme === 'day' ? 'border-gray-800/40' : 'border-white/40'}`}>
-            <div className={`w-1.5 h-4 rounded-full mt-3 animate-pulse ${theme === 'day' ? 'bg-gray-800/70' : 'bg-white/70'}`}></div>
-          </div>
-        </div>
-
-        {/* Floating Particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute top-1/4 left-1/4 w-2 h-2 rounded-full animate-pulse ${theme === 'day' ? 'bg-blue-400/40' : 'bg-blue-500/40'}`}></div>
-          <div className={`absolute top-3/4 right-1/3 w-1 h-1 rounded-full animate-pulse ${theme === 'day' ? 'bg-sky-400/40' : 'bg-purple-500/40'}`} style={{ animationDelay: '1s' }}></div>
-          <div className={`absolute bottom-1/4 left-1/3 w-1.5 h-1.5 rounded-full animate-pulse ${theme === 'day' ? 'bg-blue-500/40' : 'bg-blue-400/40'}`} style={{ animationDelay: '2s' }}></div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section 
-        ref={addToRefs}
-        className={`min-h-screen ${styles.sectionBg} py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-16 transition-all duration-1000`}
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className={`text-5xl md:text-7xl font-bold mb-8 ${styles.headingColor} tracking-tight`}>
-              <span className={`bg-gradient-to-r ${styles.gradientText} bg-clip-text text-transparent`}>
-                Powerful Features
-              </span>
-            </h2>
-            <p className={`text-2xl max-w-4xl mx-auto leading-relaxed ${styles.subTextColor} font-light`}>
-              Everything you need for seamless public transportation
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className={`group relative overflow-hidden bg-gradient-to-br ${styles.cardBg} ${styles.cardHover} rounded-3xl p-10 transition-all duration-700 hover:transform hover:scale-105 hover:shadow-2xl ${styles.glowEffect}`}>
-              <div className={`absolute inset-0 bg-gradient-to-br ${theme === 'day' ? 'from-blue-500/5 to-sky-500/5' : 'from-blue-500/10 to-purple-500/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
-              <div className="relative z-10">
-                <div className={`inline-flex p-5 rounded-3xl bg-gradient-to-r ${styles.featureAccent} mb-8 group-hover:shadow-2xl transition-all duration-500`} style={{ boxShadow: theme === 'day' ? '0 25px 50px -12px rgba(59, 130, 246, 0.4)' : '0 25px 50px -12px rgba(59, 130, 246, 0.6)' }}>
-                  <MapPin className="h-10 w-10 text-white" />
-                </div>
-                <h3 className={`text-3xl font-bold mb-6 transition-colors duration-500 ${styles.headingColor} ${theme === 'day' ? 'group-hover:text-blue-600' : 'group-hover:text-blue-400'}`}>
-                  Smart Location Detection
-                </h3>
-                <p className={`mb-8 text-lg leading-relaxed ${styles.subTextColor}`}>
-                  Automatically discover nearby bus and train stops with precise location tracking
-                </p>
-                <Link 
-                  to="/nearby-stops"
-                  className={`inline-flex items-center text-lg font-medium group-hover:translate-x-3 transition-all duration-500 ${theme === 'day' ? 'text-blue-600 hover:text-blue-500' : 'text-blue-400 hover:text-blue-300'}`}
-                >
-                  Explore <ArrowRight className="h-5 w-5 ml-3" />
-                </Link>
-              </div>
-            </div>
-
-            <div className={`group relative overflow-hidden bg-gradient-to-br ${styles.cardBg} ${styles.cardHover} rounded-3xl p-10 transition-all duration-700 hover:transform hover:scale-105 hover:shadow-2xl ${styles.glowEffect}`}>
-              <div className={`absolute inset-0 bg-gradient-to-br ${theme === 'day' ? 'from-sky-500/5 to-blue-500/5' : 'from-purple-500/10 to-blue-500/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
-              <div className="relative z-10">
-                <div className={`inline-flex p-5 rounded-3xl bg-gradient-to-r ${theme === 'day' ? 'from-sky-600 to-blue-600' : 'from-purple-600 to-blue-600'} mb-8 group-hover:shadow-2xl transition-all duration-500`} style={{ boxShadow: theme === 'day' ? '0 25px 50px -12px rgba(14, 165, 233, 0.4)' : '0 25px 50px -12px rgba(147, 51, 234, 0.6)' }}>
-                  <Navigation className="h-10 w-10 text-white" />
-                </div>
-                <h3 className={`text-3xl font-bold mb-6 transition-colors duration-500 ${styles.headingColor} ${theme === 'day' ? 'group-hover:text-sky-600' : 'group-hover:text-purple-400'}`}>
-                  Intelligent Route Planning
-                </h3>
-                <p className={`mb-8 text-lg leading-relaxed ${styles.subTextColor}`}>
-                  Get optimized routes with real-time updates and alternative options
-                </p>
-                <Link 
-                  to="/trip-planner"
-                  className={`inline-flex items-center text-lg font-medium group-hover:translate-x-3 transition-all duration-500 ${theme === 'day' ? 'text-sky-600 hover:text-sky-500' : 'text-purple-400 hover:text-purple-300'}`}
-                >
-                  Plan Trip <ArrowRight className="h-5 w-5 ml-3" />
-                </Link>
-              </div>
-            </div>
+            <Link
+              to="/trip-planner"
+              className={`px-8 py-3 rounded-full font-medium border transition-all duration-200 ${
+                theme === 'day' 
+                  ? 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white' 
+                  : 'border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white'
+              }`}
+            >
+              Plan Trip
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Real-time Updates Section */}
+      {/* Features Grid - Apple Product Style */}
       <section 
         ref={addToRefs}
-        className={`min-h-screen ${styles.sectionBgAlt} py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-16 transition-all duration-1000`}
+        className="py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-16 transition-all duration-1000"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className={`text-4xl md:text-6xl font-bold mb-6 ${styles.headingColor}`}>
-                <span>Real-time</span>
-                <br />
-                <span className={`bg-gradient-to-r ${theme === 'day' ? 'from-green-600 to-blue-600' : 'from-green-400 to-blue-500'} bg-clip-text text-transparent`}>
-                  Intelligence
-                </span>
-              </h2>
-              <p className={`text-xl mb-8 leading-relaxed ${styles.subTextColor}`}>
-                Stay informed with live arrival times, service disruptions, and route changes. 
-                Never miss your connection again.
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            {/* Smart Location */}
+            <div className={`text-center p-8 rounded-3xl transition-all duration-300 hover:scale-105 ${
+              theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
+            }`}>
+              <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
+                theme === 'day' ? 'bg-blue-100' : 'bg-blue-900'
+              }`}>
+                <MapPin className={`h-8 w-8 ${theme === 'day' ? 'text-blue-600' : 'text-blue-400'}`} />
+              </div>
+              <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+                Smart Location
+              </h3>
+              <p className={`text-sm leading-relaxed ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+                Automatically discover nearby stops with precise tracking
               </p>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${theme === 'day' ? 'from-green-600 to-blue-600' : 'from-green-500 to-blue-500'} flex items-center justify-center`}>
-                    <Clock className="h-6 w-6 text-white" />
-                  </div>
-                  <span className={`text-lg ${styles.subTextColor}`}>Live arrival predictions</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${theme === 'day' ? 'from-blue-600 to-sky-600' : 'from-blue-500 to-purple-500'} flex items-center justify-center`}>
-                    <Shield className="h-6 w-6 text-white" />
-                  </div>
-                  <span className={`text-lg ${styles.subTextColor}`}>Service alerts & notifications</span>
-                </div>
+              <Link 
+                to="/nearby-stops"
+                className={`inline-flex items-center mt-4 text-sm font-medium ${
+                  theme === 'day' ? 'text-blue-600 hover:text-blue-700' : 'text-blue-400 hover:text-blue-300'
+                }`}
+              >
+                Learn more <ArrowRight className="h-4 w-4 ml-1" />
+              </Link>
+            </div>
+
+            {/* Route Planning */}
+            <div className={`text-center p-8 rounded-3xl transition-all duration-300 hover:scale-105 ${
+              theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
+            }`}>
+              <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
+                theme === 'day' ? 'bg-green-100' : 'bg-green-900'
+              }`}>
+                <Navigation className={`h-8 w-8 ${theme === 'day' ? 'text-green-600' : 'text-green-400'}`} />
+              </div>
+              <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+                Route Planning
+              </h3>
+              <p className={`text-sm leading-relaxed ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+                Get optimized routes with real-time updates
+              </p>
+              <Link 
+                to="/trip-planner"
+                className={`inline-flex items-center mt-4 text-sm font-medium ${
+                  theme === 'day' ? 'text-green-600 hover:text-green-700' : 'text-green-400 hover:text-green-300'
+                }`}
+              >
+                Learn more <ArrowRight className="h-4 w-4 ml-1" />
+              </Link>
+            </div>
+
+            {/* Real-time */}
+            <div className={`text-center p-8 rounded-3xl transition-all duration-300 hover:scale-105 ${
+              theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
+            }`}>
+              <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
+                theme === 'day' ? 'bg-orange-100' : 'bg-orange-900'
+              }`}>
+                <Clock className={`h-8 w-8 ${theme === 'day' ? 'text-orange-600' : 'text-orange-400'}`} />
+              </div>
+              <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+                Live Updates
+              </h3>
+              <p className={`text-sm leading-relaxed ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+                Real-time arrival predictions and service alerts
+              </p>
+              <div className={`inline-flex items-center mt-4 text-sm font-medium ${
+                theme === 'day' ? 'text-orange-600' : 'text-orange-400'
+              }`}>
+                Coming soon
               </div>
             </div>
-            
-            <div className="relative">
-              <div className={`absolute inset-0 rounded-3xl blur-3xl ${theme === 'day' ? 'bg-gradient-to-r from-green-500/20 to-blue-500/20' : 'bg-gradient-to-r from-green-500/20 to-blue-500/20'}`}></div>
-              <div className={`relative bg-gradient-to-br ${styles.cardBg} rounded-3xl p-8 backdrop-blur-sm`}>
-                <div className="space-y-4">
-                  <div className={`flex items-center justify-between p-4 rounded-xl ${theme === 'day' ? 'bg-green-500/20 border border-green-500/30' : 'bg-green-500/10 border border-green-500/20'}`}>
-                    <span className={`font-medium ${theme === 'day' ? 'text-green-700' : 'text-green-400'}`}>Bus 42 - Downtown</span>
-                    <span className={`text-sm ${theme === 'day' ? 'text-green-600' : 'text-green-300'}`}>2 min</span>
-                  </div>
-                  <div className={`flex items-center justify-between p-4 rounded-xl ${theme === 'day' ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-blue-500/10 border border-blue-500/20'}`}>
-                    <span className={`font-medium ${theme === 'day' ? 'text-blue-700' : 'text-blue-400'}`}>Metro Line A</span>
-                    <span className={`text-sm ${theme === 'day' ? 'text-blue-600' : 'text-blue-300'}`}>5 min</span>
-                  </div>
-                  <div className={`flex items-center justify-between p-4 rounded-xl ${theme === 'day' ? 'bg-yellow-500/20 border border-yellow-500/30' : 'bg-yellow-500/10 border border-yellow-500/20'}`}>
-                    <span className={`font-medium ${theme === 'day' ? 'text-yellow-700' : 'text-yellow-400'}`}>Bus 18 - Airport</span>
-                    <span className={`text-sm ${theme === 'day' ? 'text-yellow-600' : 'text-yellow-300'}`}>Delayed</span>
-                  </div>
-                </div>
+
+            {/* Reliability */}
+            <div className={`text-center p-8 rounded-3xl transition-all duration-300 hover:scale-105 ${
+              theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
+            }`}>
+              <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
+                theme === 'day' ? 'bg-purple-100' : 'bg-purple-900'
+              }`}>
+                <Shield className={`h-8 w-8 ${theme === 'day' ? 'text-purple-600' : 'text-purple-400'}`} />
+              </div>
+              <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+                Reliable
+              </h3>
+              <p className={`text-sm leading-relaxed ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+                Accurate information you can depend on
+              </p>
+              <div className={`inline-flex items-center mt-4 text-sm font-medium ${
+                theme === 'day' ? 'text-purple-600' : 'text-purple-400'
+              }`}>
+                Always available
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* Coming Soon Section */}
+      {/* Simple CTA Section */}
       <section 
         ref={addToRefs}
-        className={`min-h-screen ${styles.sectionBg} py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-16 transition-all duration-1000`}
+        className="py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-16 transition-all duration-1000"
       >
         <div className="max-w-4xl mx-auto text-center">
-          <div className="relative">
-            <div className={`absolute inset-0 rounded-3xl blur-3xl ${theme === 'day' ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20' : 'bg-gradient-to-r from-purple-500/20 to-blue-500/20'}`}></div>
-            <div className={`relative bg-gradient-to-br ${styles.cardBg} rounded-3xl p-12 backdrop-blur-sm`}>
-              <Sparkles className={`h-16 w-16 mx-auto mb-8 animate-pulse ${theme === 'day' ? 'text-purple-600' : 'text-purple-400'}`} />
-              <h2 className={`text-4xl md:text-6xl font-bold mb-6 ${styles.headingColor}`}>
-                <span className={`bg-gradient-to-r ${theme === 'day' ? 'from-purple-600 to-blue-600' : 'from-purple-400 to-blue-500'} bg-clip-text text-transparent`}>
-                  What's Next
-                </span>
-              </h2>
-              <p className={`text-xl mb-12 leading-relaxed ${styles.subTextColor}`}>
-                The future of urban mobility is here. Advanced AI-powered features coming soon.
-              </p>
-              
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className={`p-6 bg-gradient-to-br rounded-xl ${theme === 'day' ? 'from-purple-500/20 to-transparent border border-purple-500/30' : 'from-purple-500/10 to-transparent border border-purple-500/20'}`}>
-                  <h3 className={`text-lg font-semibold mb-2 ${theme === 'day' ? 'text-purple-700' : 'text-purple-400'}`}>AI Route Optimization</h3>
-                  <p className={`text-sm ${theme === 'day' ? 'text-gray-600' : 'text-gray-500'}`}>Smart routing with machine learning</p>
-                </div>
-                <div className={`p-6 bg-gradient-to-br rounded-xl ${theme === 'day' ? 'from-blue-500/20 to-transparent border border-blue-500/30' : 'from-blue-500/10 to-transparent border border-blue-500/20'}`}>
-                  <h3 className={`text-lg font-semibold mb-2 ${theme === 'day' ? 'text-blue-700' : 'text-blue-400'}`}>Offline Maps</h3>
-                  <p className={`text-sm ${theme === 'day' ? 'text-gray-600' : 'text-gray-500'}`}>Navigate without internet connection</p>
-                </div>
-                <div className={`p-6 bg-gradient-to-br rounded-xl ${theme === 'day' ? 'from-green-500/20 to-transparent border border-green-500/30' : 'from-green-500/10 to-transparent border border-green-500/20'}`}>
-                  <h3 className={`text-lg font-semibold mb-2 ${theme === 'day' ? 'text-green-700' : 'text-green-400'}`}>Carbon Tracking</h3>
-                  <p className={`text-sm ${theme === 'day' ? 'text-gray-600' : 'text-gray-500'}`}>Monitor your environmental impact</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h2 className={`text-3xl md:text-5xl font-light mb-6 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
+            Ready to get started?
+          </h2>
+          <p className={`text-lg mb-8 ${theme === 'day' ? 'text-gray-600' : 'text-gray-400'}`}>
+            Discover the easiest way to navigate your city.
+          </p>
+          
+          <Link
+            to="/nearby-stops"
+            className={`inline-flex items-center px-8 py-4 rounded-full font-medium transition-all duration-200 ${
+              theme === 'day' 
+                ? 'bg-black text-white hover:bg-gray-800' 
+                : 'bg-white text-black hover:bg-gray-100'
+            }`}
+          >
+            Get started today <ArrowRight className="h-5 w-5 ml-2" />
+          </Link>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className={`py-12 px-4 sm:px-6 lg:px-8 border-t ${
+        theme === 'day' ? 'border-gray-200' : 'border-gray-800'
+      }`}>
+        <div className="max-w-7xl mx-auto text-center">
+          <p className={`text-sm ${theme === 'day' ? 'text-gray-500' : 'text-gray-400'}`}>
+            © 2024 Smart Transport. Made with ❤️
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
