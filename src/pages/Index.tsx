@@ -60,8 +60,8 @@ const Index = () => {
               to="/nearby-stops"
               className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${
                 theme === 'day' 
-                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                  : 'bg-blue-500 text-white hover:bg-blue-600'
+                  ? 'bg-black text-white hover:bg-gray-800' 
+                  : 'bg-black text-white hover:bg-gray-800'
               }`}
             >
               Find Stops
@@ -71,8 +71,8 @@ const Index = () => {
               to="/trip-planner"
               className={`px-8 py-3 rounded-full font-medium border transition-all duration-200 ${
                 theme === 'day' 
-                  ? 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white' 
-                  : 'border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white'
+                  ? 'border-black text-black hover:bg-black hover:text-white' 
+                  : 'border-white text-white hover:bg-white hover:text-black'
               }`}
             >
               Plan Trip
