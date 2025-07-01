@@ -115,9 +115,7 @@ const NearbyStops = () => {
                 onClick={getCurrentLocation}
                 disabled={loading}
                 className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-200 ${
-                  theme === 'day' 
-                    ? 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400' 
-                    : 'bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-400'
+                  loading ? 'bg-gray-400 text-white cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
                 }`}
               >
                 <MapPin className="h-4 w-4 inline mr-2" />
@@ -147,8 +145,8 @@ const NearbyStops = () => {
                     key={stop.id}
                     className={`p-6 rounded-2xl border transition-all duration-300 cursor-pointer hover:scale-105 ${
                       theme === 'day' 
-                        ? 'bg-white border-gray-200 hover:border-blue-300 hover:shadow-lg' 
-                        : 'bg-black border-gray-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10'
+                        ? 'bg-white border-gray-200 hover:border-black hover:shadow-lg' 
+                        : 'bg-black border-gray-800 hover:border-white hover:shadow-lg hover:shadow-white/10'
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -173,8 +171,8 @@ const NearbyStops = () => {
                               key={route}
                               className={`px-3 py-1 rounded-full text-xs font-medium ${
                                 theme === 'day' 
-                                  ? 'bg-gray-100 text-gray-700' 
-                                  : 'bg-gray-800 text-gray-300'
+                                  ? 'bg-black text-white' 
+                                  : 'bg-white text-black'
                               }`}
                             >
                               {route}

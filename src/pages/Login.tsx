@@ -36,14 +36,14 @@ const Login = () => {
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-12 text-base border-gray-300 rounded-md px-3 bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500 placeholder-gray-400"
+              className="w-full h-12 text-base border-gray-300 rounded-md px-3 bg-white focus:ring-2 focus:ring-black focus:border-black placeholder-gray-400"
             />
           </div>
 
           <Button 
             id="continue-button"
             onClick={handleContinue}
-            className="w-full h-12 bg-green-600 hover:bg-green-700 text-white rounded-full text-base font-medium transition-colors"
+            className="w-full h-12 bg-black hover:bg-gray-800 text-white rounded-full text-base font-medium transition-colors"
           >
             Continue
           </Button>
@@ -56,7 +56,7 @@ const Login = () => {
             <Link 
               id="signup-link"
               to="/signup" 
-              className="text-green-600 hover:text-green-700 font-medium"
+              className="text-black hover:text-gray-700 font-medium"
             >
               Sign up
             </Link>
@@ -79,7 +79,7 @@ const Login = () => {
             id="phone-login-button"
             onClick={() => handleSocialLogin('Phone')}
             variant="outline"
-            className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
+            className="w-full h-12 border-black rounded-full text-base font-medium hover:bg-black hover:text-white transition-colors bg-white"
           >
             <Phone className="h-5 w-5 mr-3" />
             Continue with phone
@@ -89,7 +89,7 @@ const Login = () => {
             id="google-login-button"
             onClick={() => handleSocialLogin('Google')}
             variant="outline"
-            className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
+            className="w-full h-12 border-black rounded-full text-base font-medium hover:bg-black hover:text-white transition-colors bg-white"
           >
             <div className="w-5 h-5 mr-3 bg-red-500 rounded-full flex items-center justify-center">
               <span className="text-white text-xs font-bold">G</span>
@@ -101,7 +101,7 @@ const Login = () => {
             id="microsoft-login-button"
             onClick={() => handleSocialLogin('Microsoft')}
             variant="outline"
-            className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
+            className="w-full h-12 border-black rounded-full text-base font-medium hover:bg-black hover:text-white transition-colors bg-white"
           >
             <div className="w-5 h-5 mr-3 flex items-center justify-center">
               <div className="grid grid-cols-2 gap-0.5 w-3 h-3">
@@ -118,7 +118,7 @@ const Login = () => {
             id="apple-login-button"
             onClick={() => handleSocialLogin('Apple')}
             variant="outline"
-            className="w-full h-12 border-gray-300 rounded-full text-base font-medium hover:bg-gray-50 transition-colors bg-white"
+            className="w-full h-12 border-black rounded-full text-base font-medium hover:bg-black hover:text-white transition-colors bg-white"
           >
             <div className="w-5 h-5 mr-3 bg-black rounded-sm flex items-center justify-center">
               <span className="text-white text-xs font-bold">🍎</span>
