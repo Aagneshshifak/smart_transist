@@ -1,9 +1,10 @@
 
 import { useState } from 'react';
-import { Map, ArrowRight, Bus, Clock, DollarSign, Navigation } from 'lucide-react';
+import { Map, ArrowRight, Bus, Clock, DollarSign, Navigation, Hotel, UtensilsCrossed, ChevronDown, ExternalLink } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import MapSection from '../components/MapSection';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
 
 interface RouteOption {
   id: string;
@@ -14,12 +15,23 @@ interface RouteOption {
   steps: string[];
 }
 
+interface Recommendation {
+  id: string;
+  name: string;
+  description: string;
+  distance: string;
+  rating?: number;
+  link?: string;
+}
+
 const TripPlanner = () => {
   const [fromLocation, setFromLocation] = useState('');
   const [toLocation, setToLocation] = useState('');
   const [routes, setRoutes] = useState<RouteOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
+  const [hotelsOpen, setHotelsOpen] = useState(false);
+  const [restaurantsOpen, setRestaurantsOpen] = useState(false);
 
   // Mock route data
   const mockRoutes: RouteOption[] = [
@@ -49,6 +61,69 @@ const TripPlanner = () => {
     }
   ];
 
+  // Mock recommendations data
+  const mockHotels: Recommendation[] = [
+    {
+      id: '1',
+      name: 'Grand Central Hotel',
+      description: '0.2 km from destination',
+      distance: '0.2 km',
+      rating: 4.5,
+      link: '#'
+    },
+    {
+      id: '2',
+      name: 'Metropolitan Inn',
+      description: '0.8 km from destination',
+      distance: '0.8 km',
+      rating: 4.2,
+      link: '#'
+    },
+    {
+      id: '3',
+      name: 'Downtown Suites',
+      description: '1.2 km from destination',
+      distance: '1.2 km',
+      rating: 4.7,
+      link: '#'
+    }
+  ];
+
+  const mockRestaurants: Recommendation[] = [
+    {
+      id: '1',
+      name: 'Bella Vista',
+      description: 'Italian cuisine • 0.3 km away',
+      distance: '0.3 km',
+      rating: 4.6,
+      link: '#'
+    },
+    {
+      id: '2',
+      name: 'The Garden Bistro',
+      description: 'Modern European • 0.5 km away',
+      distance: '0.5 km',
+      rating: 4.4,
+      link: '#'
+    },
+    {
+      id: '3',
+      name: 'Spice Route',
+      description: 'Asian fusion • 0.7 km away',
+      distance: '0.7 km',
+      rating: 4.3,
+      link: '#'
+    },
+    {
+      id: '4',
+      name: 'Oceanview Grill',
+      description: 'Seafood • 0.9 km away',
+      distance: '0.9 km',
+      rating: 4.8,
+      link: '#'
+    }
+  ];
+
   const handlePlanTrip = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -71,11 +146,49 @@ const TripPlanner = () => {
     setToLocation('');
     setRoutes([]);
     setSelectedRoute(null);
+    setHotelsOpen(false);
+    setRestaurantsOpen(false);
   };
 
   const handleRouteSelect = (routeId: string) => {
     setSelectedRoute(routeId);
   };
+
+  // Mock distance check - in real app this would be calculated from route data
+  const totalDistance = 50; // km - mock value
+  const showRecommendations = routes.length > 0 && totalDistance >= 200;
+
+  const RecommendationCard = ({ item, icon: Icon }: { item: Recommendation; icon: any }) => (
+    <div className="group bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60 rounded-2xl p-4 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-500/20 hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:bg-white dark:hover:bg-gray-900 hover:border-blue-200/50 dark:hover:border-blue-500/40">
+      <div className="flex items-start gap-3">
+        <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+          <Icon size={18} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-1">
+            <h4 className="font-semibold text-gray-900 dark:text-white text-sm truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+              {item.name}
+            </h4>
+            {item.rating && (
+              <div className="flex items-center gap-1 text-xs">
+                <span className="text-yellow-500">★</span>
+                <span className="text-gray-600 dark:text-gray-300 font-medium">{item.rating}</span>
+              </div>
+            )}
+          </div>
+          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-300">
+            {item.description}
+          </p>
+          {item.link && (
+            <button className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-300">
+              View Details
+              <ExternalLink size={10} />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#cce0ff] to-white dark:from-[#0a192f] dark:to-[#1c1c3a] transition-all duration-300 ease-in-out">
@@ -221,7 +334,7 @@ const TripPlanner = () => {
           </div>
 
           {/* Map and Details */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-6">
             <div className="transform transition-all duration-300 hover:scale-[1.005]">
               <Card>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300 flex items-center gap-2">
@@ -259,6 +372,59 @@ const TripPlanner = () => {
                 )}
               </Card>
             </div>
+
+            {/* Recommendations Sections */}
+            {showRecommendations && (
+              <div className="space-y-6 animate-fade-in animation-delay-300">
+                {/* Hotels Section */}
+                <Card>
+                  <Collapsible open={hotelsOpen} onOpenChange={setHotelsOpen}>
+                    <CollapsibleTrigger className="w-full">
+                      <div className="flex items-center justify-between py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg text-white shadow-lg">
+                            <Hotel size={16} />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">🏨 Recommended Hotels</h3>
+                        </div>
+                        <ChevronDown className={`h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${hotelsOpen ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="pt-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+                        {mockHotels.map((hotel) => (
+                          <RecommendationCard key={hotel.id} item={hotel} icon={Hotel} />
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </Card>
+
+                {/* Restaurants Section */}
+                <Card>
+                  <Collapsible open={restaurantsOpen} onOpenChange={setRestaurantsOpen}>
+                    <CollapsibleTrigger className="w-full">
+                      <div className="flex items-center justify-between py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg text-white shadow-lg">
+                            <UtensilsCrossed size={16} />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">🍽️ Suggested Restaurants</h3>
+                        </div>
+                        <ChevronDown className={`h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${restaurantsOpen ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="pt-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {mockRestaurants.map((restaurant) => (
+                          <RecommendationCard key={restaurant.id} item={restaurant} icon={UtensilsCrossed} />
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </Card>
+              </div>
+            )}
           </div>
         </div>
       </main>
