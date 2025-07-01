@@ -102,7 +102,7 @@ const TripPlanner = () => {
       id: '2',
       name: 'The Garden Bistro',
       description: 'Modern European • 0.5 km away',
-      distance: '0.5 km',
+      distance: '0.5 km',  
       rating: 4.4,
       link: '#'
     },
@@ -134,7 +134,6 @@ const TripPlanner = () => {
     setLoading(true);
     console.log('Planning trip from:', fromLocation, 'to:', toLocation);
     
-    // Simulate API call with enhanced loading
     setTimeout(() => {
       setRoutes(mockRoutes);
       setLoading(false);
@@ -154,35 +153,29 @@ const TripPlanner = () => {
     setSelectedRoute(routeId);
   };
 
-  // Mock distance check - in real app this would be calculated from route data
-  const totalDistance = 50; // km - mock value
+  const totalDistance = 50;
   const showRecommendations = routes.length > 0 && totalDistance >= 200;
 
   const RecommendationCard = ({ item, icon: Icon }: { item: Recommendation; icon: any }) => (
-    <div className="group bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60 rounded-2xl p-4 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-500/20 hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 cursor-pointer hover:bg-white dark:hover:bg-gray-900 hover:border-blue-200/50 dark:hover:border-blue-500/40">
+    <div className="p-4 border rounded-lg hover:border-blue-300 transition-colors">
       <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:shadow-xl transition-all duration-300">
-          <Icon size={18} />
-        </div>
-        <div className="flex-1 min-w-0">
+        <Icon size={16} className="text-blue-600 mt-1" />
+        <div className="flex-1">
           <div className="flex items-center justify-between mb-1">
-            <h4 className="font-semibold text-gray-900 dark:text-white text-sm truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-              {item.name}
-            </h4>
+            <h4 className="font-medium text-sm">{item.name}</h4>
             {item.rating && (
               <div className="flex items-center gap-1 text-xs">
                 <span className="text-yellow-500">★</span>
-                <span className="text-gray-600 dark:text-gray-300 font-medium">{item.rating}</span>
+                <span>{item.rating}</span>
               </div>
             )}
           </div>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-300">
+          <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
             {item.description}
           </p>
           {item.link && (
-            <button className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-300">
+            <button className="text-xs text-blue-600 hover:text-blue-700">
               View Details
-              <ExternalLink size={10} />
             </button>
           )}
         </div>
@@ -191,207 +184,159 @@ const TripPlanner = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#cce0ff] to-white dark:from-[#0a192f] dark:to-[#1c1c3a] transition-all duration-300 ease-in-out">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">Trip Planner</h1>
-          <p className="text-gray-600 dark:text-slate-100 transition-colors duration-300">Plan your journey and get the best route suggestions</p>
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold mb-2">Trip Planner</h1>
+          <p className="text-gray-600 dark:text-gray-400">Plan your journey and get route suggestions</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6">
           {/* Search Form */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="transform transition-all duration-300 hover:scale-[1.02]">
-              <Card>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300 flex items-center gap-2">
-                  <Navigation className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                  Plan Your Route
-                </h2>
+          <div className="space-y-6">
+            <Card>
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Navigation className="h-4 w-4" />
+                Plan Your Route
+              </h2>
+              
+              <form onSubmit={handlePlanTrip} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">From</label>
+                  <input
+                    type="text"
+                    value={fromLocation}
+                    onChange={(e) => setFromLocation(e.target.value)}
+                    placeholder="Enter starting location"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
                 
-                <form onSubmit={handlePlanTrip} className="space-y-4">
-                  <div className="space-y-4">
-                    <div className="group">
-                      <label htmlFor="from" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
-                        From
-                      </label>
-                      <input
-                        type="text"
-                        id="from"
-                        value={fromLocation}
-                        onChange={(e) => setFromLocation(e.target.value)}
-                        placeholder="Enter starting location"
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-300 ease-in-out hover:shadow-md focus:shadow-lg transform hover:-translate-y-0.5"
-                        required
-                      />
-                    </div>
-                    
-                    <div className="group">
-                      <label htmlFor="to" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400">
-                        To
-                      </label>
-                      <input
-                        type="text"
-                        id="to"
-                        value={toLocation}
-                        onChange={(e) => setToLocation(e.target.value)}
-                        placeholder="Enter destination"
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-300 ease-in-out hover:shadow-md focus:shadow-lg transform hover:-translate-y-0.5"
-                        required
-                      />
-                    </div>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">To</label>
+                  <input
+                    type="text"
+                    value={toLocation}
+                    onChange={(e) => setToLocation(e.target.value)}
+                    placeholder="Enter destination"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
+                
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg disabled:bg-blue-400 flex items-center justify-center gap-2"
+                  >
+                    <Map className="h-4 w-4" />
+                    {loading ? 'Planning...' : 'Plan Trip'}
+                  </button>
                   
-                  <div className="flex gap-3 pt-2">
+                  {routes.length > 0 && (
                     <button
-                      type="submit"
-                      disabled={loading}
-                      className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-6 rounded-xl disabled:from-blue-400 disabled:to-blue-500 transition-all duration-300 flex items-center justify-center gap-2 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none disabled:hover:shadow-lg"
+                      type="button"
+                      onClick={clearSearch}
+                      className="px-4 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                     >
-                      <Map className="h-4 w-4" />
-                      {loading ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                          Planning...
-                        </>
-                      ) : (
-                        'Plan Trip'
-                      )}
+                      Clear
                     </button>
-                    
-                    {routes.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={clearSearch}
-                        className="px-4 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-md"
-                      >
-                        Clear
-                      </button>
-                    )}
-                  </div>
-                </form>
-              </Card>
-            </div>
+                  )}
+                </div>
+              </form>
+            </Card>
 
             {/* Route Options */}
             {routes.length > 0 && (
-              <div className="animate-fade-in animation-delay-200">
-                <Card>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300 flex items-center gap-2">
-                    <Bus className="h-5 w-5 text-green-600 dark:text-green-400" />
-                    Route Options ({routes.length})
-                  </h3>
-                  
-                  <div className="space-y-3">
-                    {routes.map((route, index) => (
-                      <div
-                        key={route.id}
-                        onClick={() => handleRouteSelect(route.id)}
-                        className={`p-4 border-2 rounded-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 hover:shadow-lg ${
-                          selectedRoute === route.id
-                            ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 shadow-md'
-                            : 'border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-                        }`}
-                        style={{ animationDelay: `${index * 100}ms` }}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <span className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xs px-3 py-1.5 rounded-full font-medium shadow-sm">
-                              Option {index + 1}
-                            </span>
-                            <div className="flex items-center gap-2">
-                              <Clock className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                              <span className="font-semibold text-gray-900 dark:text-white transition-colors duration-300">{route.duration}</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <DollarSign className="h-4 w-4 text-green-600 dark:text-green-400" />
-                            <span className="text-sm font-semibold text-green-600 dark:text-green-400 transition-colors duration-300">{route.cost}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-300 mb-3 transition-colors duration-300">
-                          <span className="flex items-center gap-1">
-                            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                            {route.transfers} transfer{route.transfers !== 1 ? 's' : ''}
+              <Card>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Bus className="h-4 w-4" />
+                  Route Options
+                </h3>
+                
+                <div className="space-y-3">
+                  {routes.map((route, index) => (
+                    <div
+                      key={route.id}
+                      onClick={() => handleRouteSelect(route.id)}
+                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                        selectedRoute === route.id
+                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                          : 'hover:border-blue-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded">
+                            Option {index + 1}
                           </span>
-                          <span className="flex items-center gap-1">
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            {route.walkTime} walking
-                          </span>
+                          <span className="font-semibold">{route.duration}</span>
                         </div>
-                        
-                        <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300 leading-relaxed">
-                          {route.steps.join(' → ')}
-                        </div>
+                        <span className="text-sm font-semibold text-green-600">{route.cost}</span>
                       </div>
-                    ))}
-                  </div>
-                </Card>
-              </div>
+                      
+                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-2">
+                        <span>{route.transfers} transfer{route.transfers !== 1 ? 's' : ''}</span>
+                        <span>{route.walkTime} walking</span>
+                      </div>
+                      
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        {route.steps.join(' → ')}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
             )}
           </div>
 
           {/* Map and Details */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="transform transition-all duration-300 hover:scale-[1.005]">
-              <Card>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300 flex items-center gap-2">
-                  <Map className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                  Route Map
-                </h2>
-                <div className="rounded-xl overflow-hidden shadow-inner">
-                  <MapSection height="h-96" />
+            <Card>
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Map className="h-4 w-4" />
+                Route Map
+              </h2>
+              <div className="rounded-lg overflow-hidden">
+                <MapSection height="h-80" />
+              </div>
+              
+              {routes.length === 0 && !loading && (
+                <div className="mt-6 text-center">
+                  <Bus className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400">Enter your locations to see routes</p>
                 </div>
-                
-                {routes.length === 0 && !loading && (
-                  <div className="mt-8 text-center animate-fade-in">
-                    <div className="bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8 transition-all duration-300">
-                      <Bus className="h-16 w-16 text-blue-500 dark:text-blue-400 mx-auto mb-4 animate-pulse" />
-                      <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300 text-lg">Enter your start and destination to see routes</p>
-                    </div>
-                  </div>
-                )}
-                
-                {loading && (
-                  <div className="mt-8 text-center animate-fade-in">
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-2xl p-8 transition-all duration-300">
-                      <div className="relative">
-                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 dark:border-blue-800 border-t-blue-600 dark:border-t-blue-400 mx-auto mb-4"></div>
-                        <div className="absolute inset-0 rounded-full bg-blue-100 dark:bg-blue-900/20 animate-ping opacity-20"></div>
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300 text-lg font-medium">Finding the best routes for you...</p>
-                      <div className="flex justify-center mt-4 space-x-1">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </Card>
-            </div>
+              )}
+              
+              {loading && (
+                <div className="mt-6 text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                  <p className="text-gray-600 dark:text-gray-400">Finding routes...</p>
+                </div>
+              )}
+            </Card>
 
-            {/* Recommendations Sections */}
+            {/* Recommendations */}
             {showRecommendations && (
-              <div className="space-y-6 animate-fade-in animation-delay-300">
-                {/* Hotels Section */}
+              <div className="space-y-4">
+                {/* Hotels */}
                 <Card>
                   <Collapsible open={hotelsOpen} onOpenChange={setHotelsOpen}>
                     <CollapsibleTrigger className="w-full">
-                      <div className="flex items-center justify-between py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg text-white shadow-lg">
-                            <Hotel size={16} />
-                          </div>
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">🏨 Recommended Hotels</h3>
+                      <div className="flex items-center justify-between py-2">
+                        <div className="flex items-center gap-2">
+                          <Hotel size={16} />
+                          <h3 className="font-semibold">🏨 Recommended Hotels</h3>
                         </div>
-                        <ChevronDown className={`h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${hotelsOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`h-4 w-4 transition-transform ${hotelsOpen ? 'rotate-180' : ''}`} />
                       </div>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="pt-4">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+                      <div className="grid gap-3">
                         {mockHotels.map((hotel) => (
                           <RecommendationCard key={hotel.id} item={hotel} icon={Hotel} />
                         ))}
@@ -400,22 +345,20 @@ const TripPlanner = () => {
                   </Collapsible>
                 </Card>
 
-                {/* Restaurants Section */}
+                {/* Restaurants */}
                 <Card>
                   <Collapsible open={restaurantsOpen} onOpenChange={setRestaurantsOpen}>
                     <CollapsibleTrigger className="w-full">
-                      <div className="flex items-center justify-between py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg text-white shadow-lg">
-                            <UtensilsCrossed size={16} />
-                          </div>
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">🍽️ Suggested Restaurants</h3>
+                      <div className="flex items-center justify-between py-2">
+                        <div className="flex items-center gap-2">
+                          <UtensilsCrossed size={16} />
+                          <h3 className="font-semibold">🍽️ Suggested Restaurants</h3>
                         </div>
-                        <ChevronDown className={`h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${restaurantsOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`h-4 w-4 transition-transform ${restaurantsOpen ? 'rotate-180' : ''}`} />
                       </div>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="pt-4">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid gap-3">
                         {mockRestaurants.map((restaurant) => (
                           <RecommendationCard key={restaurant.id} item={restaurant} icon={UtensilsCrossed} />
                         ))}
