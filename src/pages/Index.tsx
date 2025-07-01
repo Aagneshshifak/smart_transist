@@ -94,9 +94,9 @@ const Index = () => {
               theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
             }`}>
               <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
-                theme === 'day' ? 'bg-blue-100' : 'bg-blue-900'
+                theme === 'day' ? 'bg-gray-200' : 'bg-gray-800'
               }`}>
-                <MapPin className={`h-8 w-8 ${theme === 'day' ? 'text-blue-600' : 'text-blue-400'}`} />
+                <MapPin className={`h-8 w-8 ${theme === 'day' ? 'text-black' : 'text-white'}`} />
               </div>
               <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
                 Smart Location
@@ -107,7 +107,7 @@ const Index = () => {
               <Link 
                 to="/nearby-stops"
                 className={`inline-flex items-center mt-4 text-sm font-medium ${
-                  theme === 'day' ? 'text-blue-600 hover:text-blue-700' : 'text-blue-400 hover:text-blue-300'
+                  theme === 'day' ? 'text-black hover:text-gray-700' : 'text-white hover:text-gray-300'
                 }`}
               >
                 Learn more <ArrowRight className="h-4 w-4 ml-1" />
@@ -119,9 +119,9 @@ const Index = () => {
               theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
             }`}>
               <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
-                theme === 'day' ? 'bg-green-100' : 'bg-green-900'
+                theme === 'day' ? 'bg-gray-200' : 'bg-gray-800'
               }`}>
-                <Navigation className={`h-8 w-8 ${theme === 'day' ? 'text-green-600' : 'text-green-400'}`} />
+                <Navigation className={`h-8 w-8 ${theme === 'day' ? 'text-black' : 'text-white'}`} />
               </div>
               <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
                 Route Planning
@@ -132,7 +132,7 @@ const Index = () => {
               <Link 
                 to="/trip-planner"
                 className={`inline-flex items-center mt-4 text-sm font-medium ${
-                  theme === 'day' ? 'text-green-600 hover:text-green-700' : 'text-green-400 hover:text-green-300'
+                  theme === 'day' ? 'text-black hover:text-gray-700' : 'text-white hover:text-gray-300'
                 }`}
               >
                 Learn more <ArrowRight className="h-4 w-4 ml-1" />
@@ -144,9 +144,9 @@ const Index = () => {
               theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
             }`}>
               <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
-                theme === 'day' ? 'bg-orange-100' : 'bg-orange-900'
+                theme === 'day' ? 'bg-gray-200' : 'bg-gray-800'
               }`}>
-                <Clock className={`h-8 w-8 ${theme === 'day' ? 'text-orange-600' : 'text-orange-400'}`} />
+                <Clock className={`h-8 w-8 ${theme === 'day' ? 'text-black' : 'text-white'}`} />
               </div>
               <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
                 Live Updates
@@ -155,7 +155,7 @@ const Index = () => {
                 Real-time arrival predictions and service alerts
               </p>
               <div className={`inline-flex items-center mt-4 text-sm font-medium ${
-                theme === 'day' ? 'text-orange-600' : 'text-orange-400'
+                theme === 'day' ? 'text-black' : 'text-white'
               }`}>
                 Coming soon
               </div>
@@ -166,9 +166,9 @@ const Index = () => {
               theme === 'day' ? 'bg-gray-50 hover:bg-gray-100' : 'bg-gray-900 hover:bg-gray-800'
             }`}>
               <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
-                theme === 'day' ? 'bg-purple-100' : 'bg-purple-900'
+                theme === 'day' ? 'bg-gray-200' : 'bg-gray-800'
               }`}>
-                <Shield className={`h-8 w-8 ${theme === 'day' ? 'text-purple-600' : 'text-purple-400'}`} />
+                <Shield className={`h-8 w-8 ${theme === 'day' ? 'text-black' : 'text-white'}`} />
               </div>
               <h3 className={`text-xl font-medium mb-3 ${theme === 'day' ? 'text-black' : 'text-white'}`}>
                 Reliable
@@ -177,7 +177,7 @@ const Index = () => {
                 Accurate information you can depend on
               </p>
               <div className={`inline-flex items-center mt-4 text-sm font-medium ${
-                theme === 'day' ? 'text-purple-600' : 'text-purple-400'
+                theme === 'day' ? 'text-black' : 'text-white'
               }`}>
                 Always available
               </div>
